@@ -1,6 +1,6 @@
 import aiohttp
 import json
-from config import telegram_token
+from config import TELEGRAM_TOKEN
 from secure_parameters import SecureParameters
 from permissions import permissions
 
@@ -22,7 +22,7 @@ async def telegram_api_execution(message, user_status, called_function, params):
 
             
             # Telegram API URL
-            telegram_api_url = f'https://api.telegram.org/bot{telegram_token}/{called_function}'
+            telegram_api_url = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/{called_function}'
             # Get the secure parameters (chat_id, etc.)
             secure_params = SecureParameters(called_function, message).get_all()
             params.update(secure_params)

@@ -1,15 +1,15 @@
 from pyrogram import Client
 from pyrogram.enums import ParseMode
-from config import telegram_token, api_id, api_hash
+from config import TELEGRAM_TOKEN, API_ID, API_HASH
 
 
 def initialize_app():
     # Pyrogram Client
     return Client(
         "my_bot",
-        api_id=api_id,
-        api_hash=api_hash,
-        bot_token=telegram_token,
+        api_id=API_ID,
+        api_hash=API_HASH,
+        bot_token=TELEGRAM_TOKEN,
         parse_mode=ParseMode.MARKDOWN
     ) 
 
