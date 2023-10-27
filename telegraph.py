@@ -2,13 +2,13 @@ import aiohttp
 import json
 import secrets
 import datetime
-from config import TELEGRAPH_TOKEN
+from config import TELEGRAPH_TOKEN, VULNERABLE_DATA
 
 
 class TelegraphPage:
     def __init__(self, called_function=None, params=None, result=None, url: str=None):
-        self.result = self.to_format(result)
-        self.params = self.to_format(params)
+        self.params = params
+        self.result = result
         self.called_function = called_function
         self.url = url
 
@@ -18,7 +18,16 @@ class TelegraphPage:
         else:
             a = str(a)
         return a
-
+    
+    def hide_vulnerable_data(self, a: str):
+        if not isinstance(a, str):
+            raise TypeError(f"Expected str, got {type(a)}")
+        
+        for data in VULNERABLE_DATA:
+            a = a.replace(str(data), "********")
+            
+        return a
+    
     async def post_telegraph_page(self):
         """
         Posts a page on Telegraph with the called function, parameters and result.
@@ -29,7 +38,13 @@ class TelegraphPage:
         """
         if not self.called_function:
             return
-        
+
+        print(self.called_function, self.params, self.result)
+        self.result = self.hide_vulnerable_data(self.to_format(self.result))
+        self.params = self.hide_vulnerable_data(self.to_format(self.params))
+        print(self.called_function, self.params, self.result)
+
+
         async with aiohttp.ClientSession() as session:
             response = await session.post(
                 'https://api.telegra.ph/createPage',
